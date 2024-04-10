@@ -21,6 +21,7 @@ const calculadora = {
   displayTextoElemento: displayElemento, // DIV display
 };
 
+
 /****************************************************************
  * Associar funções aos eventos dos elementos HTML
  ****************************************************************/
@@ -46,9 +47,17 @@ for(let btn of btnBotoes){
     })
 }
 
-console.log(calculadora.bufferTextoElemento)
+for(let item of btnOperacoes){
+  item.addEventListener("click", (event) => {
+    escolheOperador(calculadora, event.currentTarget.innerText)
+  })
+}
+
 
 // Botões dos operadores
+btnOperacoes.forEach((item) => {
+})
+
 
 /****************************************************************
  * Regras da aplicação
@@ -68,7 +77,7 @@ function atualizaDisplay(calculadora) {
  * Para atualizar o dispay, chame a função responsável por isso.
  */
 function limpaVariaveis(calculadora) {
-    
+
 }
 
 /* Função chamada quando um botão de número é pressionado
@@ -78,7 +87,7 @@ function limpaVariaveis(calculadora) {
  */
 function adicionaNumero(calculadora, numero) {
     calculadora.operandoAtual = calculadora.operandoAtual + numero
-    atualizaDisplay(numero)
+    atualizaDisplay(calculadora)
 }
 
 /* Função chamada quando um botão de operador é pressionado
@@ -89,7 +98,14 @@ function adicionaNumero(calculadora, numero) {
  * - armazenar o operador recebido por parâmetro no atributo operador do objeto calculadora.
  * - copiar operandoAtual para o operandoAnterior, deixando a calculadora preparada para receber o próximo número
  */
-function escolheOperador(calculadora, operador) {}
+function escolheOperador(calculadora, operador) {
+  calculadora.operador = operador
+  console.log(operador)
+  calculadora.operandoAnterior = calculadora.operandoAtual
+  console.log(calculadora)
+
+  atualizaDisplay(calculadora)
+}
 
 /* A função recebe o objeto calculadora e executa o calculo
  * - Verificar a operação a ser executada
