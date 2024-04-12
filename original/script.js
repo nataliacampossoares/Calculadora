@@ -69,21 +69,18 @@ for (let btn of btnOperacoes) {
  *  O elemento display é atualizado com o atributo operandoAtual
  */
 function atualizaDisplay(calculadora) {
-  // calculadora.displayTextoElemento.innerText = calculadora.operandoAnterior + calculadora.operador 
-  // + calculadora.operandoAtual;
-
-  calculadora.bufferTextoElemento.innerText = calculadora.operandoAnterior + " " + calculadora.operador
-  calculadora.displayTextoElemento.innerText = calculadora.operandoAtual
-  
+  calculadora.displayTextoElemento.innerText = calculadora.operandoAnterior + calculadora.operador 
+  + calculadora.operandoAtual;
 }
 
 /* Limpa os atributos do objeto calculadora e atualiza o display.
  * Para atualizar o dispay, chame a função responsável por isso.
  */
 function limpaVariaveis(calculadora) {
-  calculadora.operandoAnterior = "";
-  calculadora.operandoAtual = "";
-  calculadora.operador = ""; 
+  calculadora.operandoAnterior = " ";
+  calculadora.operandoAtual = " ";
+  calculadora.operador = " ";
+  calculadora.bufferTextoElemento.innerText = " "
   atualizaDisplay(calculadora)
 }
 
@@ -109,7 +106,7 @@ function escolheOperador(calculadora, operador) {
   calculadora.operador = operador;
   calculadora.operandoAnterior = calculadora.operandoAtual;
   calculadora.operandoAtual = "";
-  atualizaDisplay(calculadora);
+  atualizaDisplay(calculadora, operador);
 }
 
 /* A função recebe o objeto calculadora e executa o calculo
@@ -123,33 +120,20 @@ function escolheOperador(calculadora, operador) {
  * Apaga o último dígito digitado no
  */
 function apagaDigito(calculadora) {
-  calculadora.operandoAtual = calculadora.operandoAtual.slice(0, -1)  
-  atualizaDisplay(calculadora)
+  calculadora.displayTextoElemento.innerText = calculadora.displayTextoElemento.innerText.slice(0, -1);
+  // calculadora.operandoAtual.innerText =
+  // calculadora.operandoAtual.innerText.slice(0, -1);
+  // atualizaDisplay(calculadora)
 }
 
 function executaCalculo(calculadora) {
-  let resultado;
+  calculadora.bufferTextoElemento.innerText = calculadora.displayTextoElemento.innerText;
 
-  if (calculadora.operador === "+"){
-    resultado = Number(calculadora.operandoAnterior) + Number(calculadora.operandoAtual)
-  }
+  const calculo = calculadora.displayTextoElemento.innerText.replace("÷", "/");
 
-  if (calculadora.operador === "-"){
-    resultado = Number(calculadora.operandoAnterior) - Number(calculadora.operandoAtual)
-  }
-
-  if (calculadora.operador === "*"){
-    resultado = Number(calculadora.operandoAnterior) * Number(calculadora.operandoAtual)
-  }
-
-  if (calculadora.operador === "÷"){
-    resultado = Number(calculadora.operandoAnterior) / Number(calculadora.operandoAtual)
-  }
-
-  calculadora.operandoAtual = resultado;
-  calculadora.operandoAnterior = ""
-  calculadora.operador = ""
+  const resultado = eval(calculo);
   atualizaDisplay(calculadora);
 
-  
+  calculadora.operandoAtual = resultado;
+  calculadora.displayTextoElemento.innerText = resultado;
 }
