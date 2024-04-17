@@ -24,6 +24,32 @@ const calculadora = {
 /********
  * Associar funções aos eventos dos elementos HTML
  ********/
+
+
+document.addEventListener("keypress", (evento) => {
+  let teclaPressionada = evento.key
+  let numeros = "0123456789"
+  let operadores = "+-*/"
+
+  if (numeros.includes(teclaPressionada)) {
+    adicionaNumero(calculadora, teclaPressionada)
+  } 
+  else if (operadores.includes(teclaPressionada)){
+    escolheOperador(calculadora, teclaPressionada == "/" ? "÷" : teclaPressionada)
+  }
+  else if (teclaPressionada == "Enter") {
+    executaCalculo(calculadora);
+  }
+  else if (teclaPressionada == "Escape") {
+    limpaVariaveis(calculadora);
+  }
+  else if (teclaPressionada == "Backspace") {
+    apagaDigito(calculadora);
+  }
+
+}
+)
+
 // Botão AC
 btnAC.addEventListener("click", () => {
   limpaVariaveis(calculadora);
@@ -46,12 +72,6 @@ for (let btn of btnBotoes) {
   });
 }
 
-// for(let item of btnOperacoes){
-//   item.addEventListener("click", (event) => {
-//     escolheOperador(calculadora, event.currentTarget.innerText)
-//   })
-// }
-
 // Botões dos operadores
 for (let btn of btnOperacoes) {
   btn.addEventListener("click", () => {
@@ -69,9 +89,6 @@ for (let btn of btnOperacoes) {
  *  O elemento display é atualizado com o atributo operandoAtual
  */
 function atualizaDisplay(calculadora) {
-  // calculadora.displayTextoElemento.innerText = calculadora.operandoAnterior + calculadora.operador 
-  // + calculadora.operandoAtual;
-
   calculadora.bufferTextoElemento.innerText = calculadora.operandoAnterior + " " + calculadora.operador
   calculadora.displayTextoElemento.innerText = calculadora.operandoAtual
   
@@ -128,28 +145,31 @@ function apagaDigito(calculadora) {
 }
 
 function executaCalculo(calculadora) {
+  if (isNaN(calculadora.operandoAnterior)) return
+  if (isNaN(calculadora.operandoAtual)) return
+  if (calculadora.operando == "") return
+
   let resultado;
 
   if (calculadora.operador === "+"){
-    resultado = Number(calculadora.operandoAnterior) + Number(calculadora.operandoAtual)
+    resultado = parseFloat(calculadora.operandoAnterior) + parseFloat(calculadora.operandoAtual)
   }
 
   if (calculadora.operador === "-"){
-    resultado = Number(calculadora.operandoAnterior) - Number(calculadora.operandoAtual)
+    resultado = parseFloat(calculadora.operandoAnterior) - parseFloat(calculadora.operandoAtual)
   }
 
   if (calculadora.operador === "*"){
-    resultado = Number(calculadora.operandoAnterior) * Number(calculadora.operandoAtual)
+    resultado = parseFloat(calculadora.operandoAnterior) * parseFloat(calculadora.operandoAtual)
   }
 
   if (calculadora.operador === "÷"){
-    resultado = Number(calculadora.operandoAnterior) / Number(calculadora.operandoAtual)
+    resultado = parseFloat(calculadora.operandoAnterior) / parseFloat(calculadora.operandoAtual)
   }
 
   calculadora.operandoAtual = resultado;
   calculadora.operandoAnterior = ""
   calculadora.operador = ""
   atualizaDisplay(calculadora);
-
   
 }
